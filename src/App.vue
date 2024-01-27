@@ -1,57 +1,87 @@
 <template>
-  <div class="menu">
-    <a v-for="a in menus" :key="a"> {{a}}</a>
+  <Discount/>
+  <div class="black-bg" v-if="checkModal">
+    <div class="white-bg">
+        <img :src="oneRooms[roomNum].image" class="room-img">
+        <h4>{{oneRooms[roomNum].title}} </h4>
+        <p>{{oneRooms[roomNum].content}} </p>
+        <p>{{oneRooms[roomNum].price}}원</p>
+        <p>
+            <button @click="checkModal = false">닫기</button>
+        </p>
+    </div>
+  </div>
+  <div class="menu"> 
+    <a v-for="menu in menus" :key="menu"> {{menu}}</a>
   </div>
     원룸샵 
-
-  <div v-for="(product, i) in products" :key="i">
-    <h4> {{products[i]}} </h4>
-    <p> {{prices[i]}}만원</p>
-    <button @click="increase(i)">허위매물신고</button> <span>신고수 : {{count[i]}}</span>
-  </div>  
-  <!-- <div>
-    <h4> {{products[1]}}</h4>
-    <p> 70 만원</p>
+  <!-- 각 이미지 생성 -->
+  <div v-for="(oneroom, i) in oneRooms" :key=i>
+    <img :src="oneRooms[i].image" class ="room-img">
+    <h4 @click="checkModal = true; roomNum = i">{{oneRooms[i].title}}</h4>
+    <a>{{oneRooms[i].content}}</a>
   </div>
-  <div>
-    <h4> {{products[2]}}</h4>
-    <p> 90 만원</p>
-  </div> -->
+
 </template>
 
 <script>
+import JSdatas from './assets/oneroom.js';
+import discount from './discount.vue';
 
 export default {
   name: 'App',
   data(){
     return {
-      count : [0,0,0],
-      prices : [50,80,90],
       menus : ['Home', 'Shop', 'About'],
-      products : ['역삼동원룸', '천호동원룸', '마포구원룸']
+      oneRooms : JSdatas,
+      checkModal : false,
+      roomNum : undefined
     }
   }, 
   methods: {
-    increase(i){
-      this.count[i]++;
-    }
   },
   components: {
+    Discount : discount
   }
 }
 </script>
 
 <style>
+
+body {
+  margin : 0
+}
+div {
+  box-sizing: border-box;
+}
+
+.black-bg {
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed; padding: 20px;
+}
+
+.white-bg {
+  width: 100%; background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.room-img {
+  width: 100%;
+  margin-top: 40px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #232628;
 }
 
 .menu {
-  background: darkgoldenrod;
+  background: rgb(60, 211, 88);
   padding: 15px;
   border-radius: 5px;
 }
@@ -59,5 +89,12 @@ export default {
 .menu a {
   color : white;
   padding: 10px;
+}
+
+.discount {
+  background: #eee;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 0px;
 }
 </style> 
