@@ -1,32 +1,32 @@
 <template>
   <Discount/>
-  <div class="black-bg" v-if="checkModal">
-    <div class="white-bg">
-        <img :src="oneRooms[roomNum].image" class="room-img">
-        <h4>{{oneRooms[roomNum].title}} </h4>
-        <p>{{oneRooms[roomNum].content}} </p>
-        <p>{{oneRooms[roomNum].price}}원</p>
-        <p>
-            <button @click="checkModal = false">닫기</button>
-        </p>
-    </div>
-  </div>
+  <Modal :oneRooms="oneRooms" :checkModal="checkModal" :roomNum="roomNum" />
+
   <div class="menu"> 
     <a v-for="menu in menus" :key="menu"> {{menu}}</a>
   </div>
+  <prac :pp="123"/>
     원룸샵 
-  <!-- 각 이미지 생성 -->
-  <div v-for="(oneroom, i) in oneRooms" :key=i>
+
+  <!-- <Room :oneRooms="oneRooms" :checkModal="checkModal"/> -->
+  <Room :oneRoom="oneRooms[i]" v-for="(oneRoom, i) in oneRooms" :key="i"/>
+
+
+  <!-- <div v-for="(oneroom, i) in oneRooms" :key=i>
     <img :src="oneRooms[i].image" class ="room-img">
     <h4 @click="checkModal = true; roomNum = i">{{oneRooms[i].title}}</h4>
     <a>{{oneRooms[i].content}}</a>
-  </div>
+  </div> -->
 
 </template>
 
 <script>
 import JSdatas from './assets/oneroom.js';
 import discount from './discount.vue';
+import Modal from './Modal.vue';
+import room from './Room.vue';
+import prac from './practice.vue'
+
 
 export default {
   name: 'App',
@@ -41,7 +41,10 @@ export default {
   methods: {
   },
   components: {
-    Discount : discount
+    Discount : discount,
+    Modal : Modal,
+    Room : room,
+    prac : prac
   }
 }
 </script>
