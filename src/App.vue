@@ -1,15 +1,16 @@
 <template>
   <Discount/>
-  <Modal :oneRooms="oneRooms" :checkModal="checkModal" :roomNum="roomNum" />
-
+  <Modal @closeModal="checkModal = false" :oneRooms="oneRooms" :roomNum="roomNum" :checkModal="checkModal"/>
+  
   <div class="menu"> 
     <a v-for="menu in menus" :key="menu"> {{menu}}</a>
   </div>
-  <prac :pp="123"/>
-    원룸샵 
+
+  원룸샵
 
   <!-- <Room :oneRooms="oneRooms" :checkModal="checkModal"/> -->
-  <Room :oneRoom="oneRooms[i]" v-for="(oneRoom, i) in oneRooms" :key="i"/>
+  <Room @openModal="checkModal = true; roomNum = $event" :oneRoom="oneRooms[i]"
+   v-for="(oneRoom, i) in oneRooms" :key="i"/>
 
 
   <!-- <div v-for="(oneroom, i) in oneRooms" :key=i>
@@ -23,9 +24,8 @@
 <script>
 import JSdatas from './assets/oneroom.js';
 import discount from './discount.vue';
-import Modal from './Modal.vue';
 import room from './Room.vue';
-import prac from './practice.vue'
+import Modal from './Modal.vue'
 
 
 export default {
@@ -42,9 +42,8 @@ export default {
   },
   components: {
     Discount : discount,
-    Modal : Modal,
     Room : room,
-    prac : prac
+    Modal : Modal
   }
 }
 </script>
