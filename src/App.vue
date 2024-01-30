@@ -1,12 +1,25 @@
 <template>
-  <Discount/>
-  <Modal @closeModal="checkModal = false" :oneRooms="oneRooms" :roomNum="roomNum" :checkModal="checkModal"/>
+  <Discount v-if="showDiscount == true" />
+
+  <transition name="fade">
+    <Modal @closeModal="checkModal = false" :oneRooms="oneRooms" :roomNum="roomNum" :checkModal="checkModal"/>
+  </transition>
   
   <div class="menu"> 
     <a v-for="menu in menus" :key="menu"> {{menu}}</a>
   </div>
 
   원룸샵
+  <p>
+     <button @click="priceSort">가격순 정렬</button>
+  </p>
+  <p>
+     <button @click="priceSortR">가격 역순 정렬</button>
+  </p>
+  <p>
+     <button @click="hangulSort">가나다 정렬</button>
+  </p>
+
 
   <!-- <Room :oneRooms="oneRooms" :checkModal="checkModal"/> -->
   <Room @openModal="checkModal = true; roomNum = $event" :oneRoom="oneRooms[i]"
@@ -27,19 +40,49 @@ import discount from './discount.vue';
 import room from './Room.vue';
 import Modal from './Modal.vue'
 
-
 export default {
   name: 'App',
   data(){
     return {
+      showDiscount : true,
       menus : ['Home', 'Shop', 'About'],
       oneRooms : JSdatas,
+      oneRoomsOrigin : [...JSdatas],
       checkModal : false,
-      roomNum : undefined
+      roomNum : undefined,
     }
   }, 
   methods: {
+    priceSort() {
+      this.oneRooms.sort(function(a,b){
+          return a.price - b.price;
+      })
+    },
+    priceSortR() {
+      this.oneRooms.sort(function(a,b){
+          return b.price - a.price;
+      })
+    },
+    hangulSort() {
+      this.oneRooms.title.sort();
+    },
+    rollBack(){
+      this.oneRooms = [...this.oneRoomsOrigin];
+    }
   },
+
+  beforeUpdate(){
+    if (this.month == 2){
+      alert('2개월은 너무 적음.. 안팝니다')
+    }
+ },
+
+  // mounted(){
+  //   setTimeout(()=>{
+  //     this.showDiscount = false;
+  //   }, 1000);
+  // },
+
   components: {
     Discount : discount,
     Room : room,
@@ -49,6 +92,26 @@ export default {
 </script>
 
 <style>
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-active {
+  transition: all 1s;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-from {
+  transform: translateY(-1000px);
+}
+.fade-enter-active {
+  transition: all 1s;
+}
+.fade-enter-to {
+  opacity: translateY(0px);
+}
+
 
 body {
   margin : 0
